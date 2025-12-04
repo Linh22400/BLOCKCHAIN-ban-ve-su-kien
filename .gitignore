@@ -1,0 +1,7 @@
+# Thư mục chứa các gói/thư viện
+node_modules/
+vendor/
+
+# Các tệp cấu hình hệ thống
+.env
+.DS_Store
