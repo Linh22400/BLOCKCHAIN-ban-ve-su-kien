@@ -29,6 +29,9 @@ export function Navbar() {
                     <Link href="/my-tickets" className="text-sm font-medium hover:text-primary transition-colors">
                         My Tickets
                     </Link>
+                    <Link href="/admin/dashboard" className="text-sm font-medium hover:text-primary transition-colors">
+                        Organizer
+                    </Link>
                     <Link href="/admin/create" className="text-sm font-medium hover:text-primary transition-colors">
                         Create Event
                     </Link>
@@ -70,6 +73,13 @@ export function Navbar() {
                         onClick={() => setIsMenuOpen(false)}
                     >
                         My Tickets
+                    </Link>
+                    <Link
+                        href="/admin/dashboard"
+                        className="text-sm font-medium hover:text-primary transition-colors"
+                        onClick={() => setIsMenuOpen(false)}
+                    >
+                        Organizer
                     </Link>
                     <Link
                         href="/admin/create"

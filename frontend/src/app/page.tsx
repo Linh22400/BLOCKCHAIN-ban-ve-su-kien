@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { EventCard } from "@/components/events/EventCard";
+import { HomeEventCard } from "@/components/events/HomeEventCard";
 import { EVENTS } from "@/lib/mockData";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
@@ -11,7 +11,6 @@ export default function Home() {
       <section className="relative h-[500px] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-background to-background z-0" />
         <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=1600&q=80')] bg-cover bg-center opacity-10 z-[-1]" />
-
         <div className="container relative z-10 px-4 text-center space-y-6">
           <h1 className="text-5xl md:text-7xl font-bold tracking-tight">
             <span className="text-gradient">Next Gen</span> Ticketing
@@ -48,7 +47,7 @@ export default function Home() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {EVENTS.map((event) => (
-            <EventCard key={event.id} event={event} />
+            <HomeEventCard key={event.id} event={event} />
           ))}
         </div>
       </section>

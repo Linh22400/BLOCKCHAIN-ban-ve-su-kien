@@ -2,7 +2,6 @@
   "name": "nft-ticketing-contracts",
   "version": "1.0.0",
   "description": "Smart contracts for NFT Ticketing System",
-  "type": "module",
   "scripts": {
     "test": "hardhat test",
     "compile": "hardhat compile",
