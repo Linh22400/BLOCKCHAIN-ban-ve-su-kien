@@ -5,7 +5,7 @@ import EventTicketABI from './EventTicketABI.json';
 // Update these after each deployment
 export const CONTRACTS = {
     EventFactory: {
-        address: '0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512',
+        address: '0x7B8c8a0c2E25D460a74679EAF124b7e9BA6AC303', // Sepolia - Deployed successfully successfully
         abi: EventFactoryABI,
     },
     EventTicket: {
@@ -15,9 +15,9 @@ export const CONTRACTS = {
     },
 };
 
-// Local Hardhat network configuration
+// Network configuration for Sepolia
 export const NETWORK_CONFIG = {
-    chainId: 31337,
-    chainName: 'Hardhat Local',
-    rpcUrl: 'http://127.0.0.1:8545',
+    chainId: 11155111,
+    chainName: 'Sepolia',
+    rpcUrl: 'https://eth-sepolia-testnet.api.pocket.network', // Public RPC
 };
