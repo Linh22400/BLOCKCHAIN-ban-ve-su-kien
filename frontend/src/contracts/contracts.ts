@@ -5,7 +5,7 @@ import EventTicketABI from './EventTicketABI.json';
 // Update these after each deployment
 export const CONTRACTS = {
     EventFactory: {
-        address: '0x7B8c8a0c2E25D460a74679EAF124b7e9BA6AC303', // Sepolia - Deployed successfully successfully
+        address: '0x33fDde77771520dD1fc11fCcCb60fbdcb731AB3f', // Sepolia - Marketplace V3 (Public Node)
         abi: EventFactoryABI,
     },
     EventTicket: {

@@ -98,18 +98,34 @@ export function useMintTicket(eventAddress?: string) {
 }
 
 /**
- * Hook to resell a ticket
+ * Hook to get ticket price (if listed)
  */
-export function useResellTicket(eventAddress?: string) {
+export function useTicketPrice(eventAddress?: string, tokenId?: number) {
+    const { data: price, refetch } = useReadContract({
+        address: eventAddress as `0x${string}`,
+        abi: CONTRACTS.EventTicket.abi,
+        functionName: 'ticketPrices',
+        args: tokenId !== undefined ? [BigInt(tokenId)] : undefined,
+    });
+
+    return {
+        price: price as bigint | undefined,
+        refetch,
+    };
+}
+
+/**
+ * Hook to list a ticket for sale
+ */
+export function useListTicket(eventAddress?: string) {
     const { writeContract, data: hash, isPending, error } = useWriteContract();
 
     const { isLoading: isConfirming, isSuccess } = useWaitForTransactionReceipt({
         hash,
     });
 
-    const resellTicket = (params: {
+    const listTicket = (params: {
         tokenId: number;
-        to: string;
         price: bigint; // In wei
     }) => {
         if (!eventAddress) return;
@@ -117,14 +133,79 @@ export function useResellTicket(eventAddress?: string) {
         writeContract({
             address: eventAddress as `0x${string}`,
             abi: CONTRACTS.EventTicket.abi,
-            functionName: 'resellTicket',
-            args: [BigInt(params.tokenId), params.to],
+            functionName: 'listTicket',
+            args: [BigInt(params.tokenId), params.price],
+        });
+    };
+
+    return {
+        listTicket,
+        hash,
+        isPending,
+        isConfirming,
+        isSuccess,
+        error,
+    };
+}
+
+/**
+ * Hook to unlist a ticket
+ */
+export function useUnlistTicket(eventAddress?: string) {
+    const { writeContract, data: hash, isPending, error } = useWriteContract();
+
+    const { isLoading: isConfirming, isSuccess } = useWaitForTransactionReceipt({
+        hash,
+    });
+
+    const unlistTicket = (tokenId: number) => {
+        if (!eventAddress) return;
+
+        writeContract({
+            address: eventAddress as `0x${string}`,
+            abi: CONTRACTS.EventTicket.abi,
+            functionName: 'unlistTicket',
+            args: [BigInt(tokenId)],
+        });
+    };
+
+    return {
+        unlistTicket,
+        hash,
+        isPending,
+        isConfirming,
+        isSuccess,
+        error,
+    };
+}
+
+/**
+ * Hook to buy a listed ticket
+ */
+export function useBuyListedTicket(eventAddress?: string) {
+    const { writeContract, data: hash, isPending, error } = useWriteContract();
+
+    const { isLoading: isConfirming, isSuccess } = useWaitForTransactionReceipt({
+        hash,
+    });
+
+    const buyListedTicket = (params: {
+        tokenId: number;
+        price: bigint; // In wei
+    }) => {
+        if (!eventAddress) return;
+
+        writeContract({
+            address: eventAddress as `0x${string}`,
+            abi: CONTRACTS.EventTicket.abi,
+            functionName: 'buyListedTicket',
+            args: [BigInt(params.tokenId)],
             value: params.price,
         });
     };
 
     return {
-        resellTicket,
+        buyListedTicket,
         hash,
         isPending,
         isConfirming,

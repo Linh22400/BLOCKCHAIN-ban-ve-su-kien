@@ -71,28 +71,68 @@ contract EventTicket is ERC721URIStorage, Ownable {
         emit TicketMinted(to, tokenId);
     }
     
+    // Marketplace
+    mapping(uint256 => uint256) public ticketPrices; // Price in Wei. 0 = Not listed.
+
+    event TicketListed(uint256 indexed tokenId, uint256 price);
+    event TicketUnlisted(uint256 indexed tokenId);
+    event TicketSold(uint256 indexed tokenId, address indexed from, address indexed to, uint256 price);
+
     /**
-     * @dev Transfer ticket with price ceiling and royalty enforcement
+     * @dev List ticket for sale
      */
-    function resellTicket(uint256 tokenId, address to) public payable {
+    function listTicket(uint256 tokenId, uint256 price) public {
         require(ownerOf(tokenId) == msg.sender, "Not ticket owner");
         require(!ticketUsed[tokenId], "Ticket already used");
-        require(msg.value <= maxResalePrice, "Price exceeds ceiling");
+        require(price > 0, "Price must be greater than 0");
+        require(price <= maxResalePrice, "Price exceeds ceiling");
+
+        ticketPrices[tokenId] = price;
+        emit TicketListed(tokenId, price);
+    }
+
+    /**
+     * @dev Cancel ticket listing
+     */
+    function unlistTicket(uint256 tokenId) public {
+        require(ownerOf(tokenId) == msg.sender, "Not ticket owner");
+        ticketPrices[tokenId] = 0;
+        emit TicketUnlisted(tokenId);
+    }
+
+    /**
+     * @dev Buy a listed ticket
+     */
+    function buyListedTicket(uint256 tokenId) public payable {
+        uint256 price = ticketPrices[tokenId];
+        require(price > 0, "Ticket not listed");
+        require(msg.value >= price, "Insufficient payment");
         
+        address seller = ownerOf(tokenId);
+        require(seller != msg.sender, "Cannot buy your own ticket");
+
         // Calculate royalty
-        uint256 royalty = (msg.value * royaltyPercentage) / 10000;
-        uint256 sellerAmount = msg.value - royalty;
-        
+        uint256 royalty = (price * royaltyPercentage) / 10000;
+        uint256 sellerAmount = price - royalty;
+
+        // Clear listing
+        ticketPrices[tokenId] = 0;
+
         // Transfer royalty to organizer (contract owner)
         payable(owner()).transfer(royalty);
-        
+
         // Transfer payment to seller
-        payable(msg.sender).transfer(sellerAmount);
-        
+        payable(seller).transfer(sellerAmount);
+
+        // Refund excess payment
+        if (msg.value > price) {
+            payable(msg.sender).transfer(msg.value - price);
+        }
+
         // Transfer NFT
-        _transfer(msg.sender, to, tokenId);
-        
-        emit TicketResold(tokenId, msg.sender, to, msg.value);
+        _transfer(seller, msg.sender, tokenId);
+
+        emit TicketSold(tokenId, seller, msg.sender, price);
     }
     
     /**
