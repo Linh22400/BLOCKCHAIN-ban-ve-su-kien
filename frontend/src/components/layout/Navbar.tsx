@@ -21,19 +21,19 @@ export function Navbar() {
                 {/* Desktop Nav */}
                 <div className="hidden md:flex items-center gap-8">
                     <Link href="/events" className="text-sm font-medium hover:text-primary transition-colors">
-                        Events
+                        Sự Kiện
                     </Link>
                     <Link href="/marketplace" className="text-sm font-medium hover:text-primary transition-colors">
-                        Marketplace
+                        Chợ Vé
                     </Link>
                     <Link href="/my-tickets" className="text-sm font-medium hover:text-primary transition-colors">
-                        My Tickets
+                        Vé Của Tôi
                     </Link>
                     <Link href="/admin/dashboard" className="text-sm font-medium hover:text-primary transition-colors">
-                        Organizer
+                        Tổ Chức
                     </Link>
                     <Link href="/admin/create" className="text-sm font-medium hover:text-primary transition-colors">
-                        Create Event
+                        Tạo Sự Kiện
                     </Link>
                 </div>
 
@@ -58,35 +58,35 @@ export function Navbar() {
                         className="text-sm font-medium hover:text-primary transition-colors"
                         onClick={() => setIsMenuOpen(false)}
                     >
-                        Events
+                        Sự Kiện
                     </Link>
                     <Link
                         href="/marketplace"
                         className="text-sm font-medium hover:text-primary transition-colors"
                         onClick={() => setIsMenuOpen(false)}
                     >
-                        Marketplace
+                        Chợ Vé
                     </Link>
                     <Link
                         href="/my-tickets"
                         className="text-sm font-medium hover:text-primary transition-colors"
                         onClick={() => setIsMenuOpen(false)}
                     >
-                        My Tickets
+                        Vé Của Tôi
                     </Link>
                     <Link
                         href="/admin/dashboard"
                         className="text-sm font-medium hover:text-primary transition-colors"
                         onClick={() => setIsMenuOpen(false)}
                     >
-                        Organizer
+                        Tổ Chức
                     </Link>
                     <Link
                         href="/admin/create"
                         className="text-sm font-medium hover:text-primary transition-colors"
                         onClick={() => setIsMenuOpen(false)}
                     >
-                        Create Event
+                        Tạo Sự Kiện
                     </Link>
                     <ConnectButton />
                 </div>

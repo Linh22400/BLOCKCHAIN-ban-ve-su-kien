@@ -45,7 +45,7 @@ export function HomeEventCard({ event }: HomeEventCardProps) {
 
                 <Link href={`/events/${event.id}`} className="block">
                     <Button className="w-full" variant="secondary">
-                        View Details
+                        Xem Chi Tiết
                     </Button>
                 </Link>
             </div>

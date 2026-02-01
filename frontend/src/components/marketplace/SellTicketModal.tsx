@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -21,24 +21,27 @@ interface SellTicketModalProps {
 export function SellTicketModal({ isOpen, onClose, eventAddress, tokenId, maxResalePrice, onSuccess }: SellTicketModalProps) {
     const [price, setPrice] = useState("")
     const { listTicket, isPending, isConfirming, isSuccess } = useListTicket(eventAddress)
+    const hasCalledSuccess = useRef(false)
 
     const handleList = () => {
         if (!price) return
         try {
             const priceWei = parseEther(price)
             if (priceWei > maxResalePrice) {
-                alert("Price exceeds maximum resale price")
+                alert("Giá vượt quá giá bán lại tối đa")
                 return
             }
+            hasCalledSuccess.current = false // Reset before new transaction
             listTicket({ tokenId, price: priceWei })
         } catch (e) {
             console.error(e)
         }
     }
 
-    // Close modal on success
+    // Close modal on success - only once
     useEffect(() => {
-        if (isSuccess) {
+        if (isSuccess && !hasCalledSuccess.current) {
+            hasCalledSuccess.current = true
             if (onSuccess) onSuccess();
             else onClose();
         }
@@ -48,15 +51,15 @@ export function SellTicketModal({ isOpen, onClose, eventAddress, tokenId, maxRes
         <Dialog open={isOpen} onOpenChange={onClose}>
             <DialogContent className="sm:max-w-[425px] bg-background border-white/10">
                 <DialogHeader>
-                    <DialogTitle>Sell Ticket #{tokenId}</DialogTitle>
+                    <DialogTitle>Bán Vé #{tokenId}</DialogTitle>
                     <DialogDescription>
-                        List your ticket for sale on the marketplace.
+                        Đăng bán vé của bạn trên chợ vé.
                     </DialogDescription>
                 </DialogHeader>
                 <div className="grid gap-4 py-4">
                     <div className="grid grid-cols-4 items-center gap-4">
                         <Label htmlFor="price" className="text-right">
-                            Price (ETH)
+                            Giá (ETH)
                         </Label>
                         <Input
                             id="price"
@@ -67,18 +70,18 @@ export function SellTicketModal({ isOpen, onClose, eventAddress, tokenId, maxRes
                         />
                     </div>
                     <p className="text-xs text-muted-foreground text-right">
-                        Max Price: {maxResalePrice ? Number(maxResalePrice) / 1e18 : 0} ETH
+                        Giá Tối Đa: {maxResalePrice ? Number(maxResalePrice) / 1e18 : 0} ETH
                     </p>
                 </div>
                 <DialogFooter>
-                    <Button variant="outline" onClick={onClose}>Cancel</Button>
+                    <Button variant="outline" onClick={onClose}>Hủy</Button>
                     <Button onClick={handleList} disabled={isPending || isConfirming || !price}>
                         {(isPending || isConfirming) ? (
                             <>
                                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                Processing
+                                Đang Xử Lý
                             </>
-                        ) : "List Ticket"}
+                        ) : "Đăng Bán"}
                     </Button>
                 </DialogFooter>
             </DialogContent>

@@ -23,9 +23,14 @@ export interface SoldTicket {
 export async function fetchSoldTickets(eventAddresses: string[], userAddress: string) {
     const soldTickets: SoldTicket[] = [];
 
-    // console.log("Fetching sold tickets for user:", userAddress);
-
     try {
+        // Get current block to calculate safe range
+        const currentBlock = await publicClient.getBlockNumber();
+        // Query last 50k blocks (publicnode.com limit)
+        const fromBlock = currentBlock > BigInt(50000)
+            ? currentBlock - BigInt(50000)
+            : BigInt(0);
+
         for (const eventAddress of eventAddresses) {
             const logs = await publicClient.getLogs({
                 address: eventAddress as `0x${string}`,
@@ -33,10 +38,9 @@ export async function fetchSoldTickets(eventAddresses: string[], userAddress: st
                 args: {
                     from: userAddress as `0x${string}`
                 },
-                fromBlock: 'earliest'
+                fromBlock: fromBlock, // Use recent block range instead of 'earliest'
+                toBlock: currentBlock
             });
-
-            // console.log(`Found ${logs.length} sold logs for event ${eventAddress}`);
 
             for (const log of logs) {
                 soldTickets.push({

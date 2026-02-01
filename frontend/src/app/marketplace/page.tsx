@@ -3,7 +3,7 @@
 import { useGetAllEvents } from "@/hooks/useEventFactory"
 import { fetchAllListedTickets, ListedTicket } from "@/utils/fetchListedTickets"
 import { useBuyListedTicket } from "@/hooks/useEventTicket"
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef } from "react"
 import { formatEther } from "viem"
 import { Button } from "@/components/ui/button"
 import { Ticket as TicketIcon, Loader2, ShoppingCart, Tag } from "lucide-react"
@@ -15,17 +15,19 @@ function MarketplaceTicketCard({ ticket, onBuySuccess }: { ticket: ListedTicket,
     const { buyListedTicket, isPending, isConfirming, isSuccess } = useBuyListedTicket(ticket.eventAddress)
     const { address } = useAccount()
     const isOwner = address && ticket.owner.toLowerCase() === address.toLowerCase()
+    const hasShownBuyToast = useRef(false)
 
     useEffect(() => {
-        if (isSuccess) {
-            toast.success("Ticket purchased successfully!")
+        if (isSuccess && !hasShownBuyToast.current) {
+            hasShownBuyToast.current = true
+            toast.success("Mua vé thành công!")
             onBuySuccess()
         }
     }, [isSuccess, onBuySuccess])
 
     const handleBuy = () => {
         if (!address) {
-            toast.error("Please connect your wallet first")
+            toast.error("Vui lòng kết nối ví trước")
             return
         }
         buyListedTicket({ tokenId: ticket.tokenId, price: ticket.price })
@@ -39,18 +41,18 @@ function MarketplaceTicketCard({ ticket, onBuySuccess }: { ticket: ListedTicket,
                         <TicketIcon className="h-5 w-5 text-white" />
                     </div>
                     <div>
-                        <h3 className="font-bold text-lg">Ticket #{ticket.tokenId}</h3>
+                        <h3 className="font-bold text-lg">Vé #{ticket.tokenId}</h3>
                         <p className="text-xs text-muted-foreground">{ticket.eventName}</p>
                     </div>
                 </div>
                 <div className="text-right">
-                    <p className="text-xs text-muted-foreground">Price</p>
+                    <p className="text-xs text-muted-foreground">Giá</p>
                     <p className="text-lg font-bold text-green-400">{formatEther(ticket.price)} ETH</p>
                 </div>
             </div>
 
             <div className="bg-background/50 rounded-lg p-3 mb-4 text-xs font-mono text-muted-foreground break-all">
-                Owner: {ticket.owner.slice(0, 6)}...{ticket.owner.slice(-4)}
+                Chủ sở hữu: {ticket.owner.slice(0, 6)}...{ticket.owner.slice(-4)}
             </div>
 
             <Button
@@ -62,14 +64,14 @@ function MarketplaceTicketCard({ ticket, onBuySuccess }: { ticket: ListedTicket,
                 {(isPending || isConfirming) ? (
                     <>
                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                        Processing...
+                        Đang Xử Lý...
                     </>
                 ) : isOwner ? (
-                    "You Own This"
+                    "Bạn Sở Hữu Vé Này"
                 ) : (
                     <>
                         <ShoppingCart className="mr-2 h-4 w-4" />
-                        Buy Ticket
+                        Mua Vé
                     </>
                 )}
             </Button>
@@ -107,9 +109,9 @@ export default function MarketplacePage() {
         <div className="container mx-auto px-4 py-12">
             <div className="mb-8 flex items-center justify-between">
                 <div>
-                    <h1 className="text-4xl font-bold mb-2">Marketplace</h1>
+                    <h1 className="text-4xl font-bold mb-2">Chợ Vé</h1>
                     <p className="text-muted-foreground">
-                        Buy and sell tickets safely on the secondary market
+                        Mua và bán vé an toàn trên thị trường thứ cấp
                     </p>
                 </div>
                 <div className="bg-primary/10 p-3 rounded-full">
@@ -126,9 +128,9 @@ export default function MarketplacePage() {
             ) : tickets.length === 0 ? (
                 <div className="text-center py-20 bg-card border border-white/5 rounded-xl">
                     <ShoppingCart className="h-16 w-16 mx-auto mb-4 text-muted-foreground opacity-50" />
-                    <h3 className="text-xl font-bold mb-2">No Tickets Listed</h3>
+                    <h3 className="text-xl font-bold mb-2">Chưa Có Vé Nào Đang Bán</h3>
                     <p className="text-muted-foreground">
-                        There are currently no tickets for sale. Check back later!
+                        Hiện tại chưa có vé nào được đăng bán. Quay lại sau nhé!
                     </p>
                 </div>
             ) : (

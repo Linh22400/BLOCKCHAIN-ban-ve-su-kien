@@ -37,7 +37,7 @@ export default function EventDetailsPage() {
     if (loadingAddresses) {
         return (
             <div className="container mx-auto px-4 py-12 text-center">
-                <div className="animate-pulse">Loading event...</div>
+                <div className="animate-pulse">Đang tải sự kiện...</div>
             </div>
         )
     }
@@ -45,7 +45,7 @@ export default function EventDetailsPage() {
     if (!eventAddress) {
         return (
             <div className="container mx-auto px-4 py-12 text-center">
-                Event not found
+                Không tìm thấy sự kiện
             </div>
         )
     }
@@ -62,14 +62,14 @@ export default function EventDetailsPage() {
 
     // Format data
     const formattedDate = eventDate
-        ? new Date(eventDate * 1000).toLocaleDateString('en-US', {
+        ? new Date(eventDate * 1000).toLocaleDateString('vi-VN', {
             year: 'numeric',
             month: 'long',
             day: 'numeric',
             hour: '2-digit',
             minute: '2-digit'
         })
-        : 'TBA'
+        : 'Chưa xác định'
 
     const formattedPrice = ticketPrice ? formatEther(ticketPrice) : '0'
 
@@ -104,7 +104,7 @@ export default function EventDetailsPage() {
                     <div className="lg:col-span-2 space-y-8">
                         <div>
                             <h1 className="text-4xl md:text-5xl font-bold mb-4">
-                                {eventName || 'Loading...'}
+                                {eventName || 'Đang tải...'}
                             </h1>
                             <div className="flex flex-wrap gap-6 text-muted-foreground">
                                 <div className="flex items-center gap-2">
@@ -113,7 +113,7 @@ export default function EventDetailsPage() {
                                 </div>
                                 <div className="flex items-center gap-2">
                                     <MapPin className="h-5 w-5 text-primary" />
-                                    <span>{eventLocation || 'TBA'}</span>
+                                    <span>{eventLocation || 'Chưa xác định'}</span>
                                 </div>
                                 <div className="flex items-center gap-2">
                                     <Ticket className="h-5 w-5 text-primary" />
@@ -123,42 +123,42 @@ export default function EventDetailsPage() {
                         </div>
 
                         <div className="prose prose-invert max-w-none">
-                            <h3 className="text-2xl font-bold mb-4">About Event</h3>
+                            <h3 className="text-2xl font-bold mb-4">Về Sự Kiện</h3>
                             <p className="text-lg text-muted-foreground leading-relaxed">
-                                This event is secured on the blockchain using NFT tickets.
-                                Each ticket is a unique digital asset that proves your ownership and cannot be counterfeited.
+                                Sự kiện này được bảo mật trên blockchain bằng vé NFT.
+                                Mỗi vé là một tài sản kỹ thuật số độc nhất chứng minh quyền sở hữu của bạn và không thể làm giả.
                                 <br /><br />
-                                Features of blockchain tickets:
+                                Tính năng của vé blockchain:
                             </p>
                             <ul className="text-muted-foreground">
-                                <li>✅ Verifiable authenticity</li>
-                                <li>✅ Transparent pricing with ceiling on resales</li>
-                                <li>✅ Automatic royalties to organizers</li>
-                                <li>✅ Secure transfer of ownership</li>
+                                <li>✅ Xác thực được kiểm chứng</li>
+                                <li>✅ Giá minh bạch với giới hạn giá bán lại</li>
+                                <li>✅ Hoa hồng tự động cho người tổ chức</li>
+                                <li>✅ Chuyển quyền sở hữu an toàn</li>
                             </ul>
                         </div>
 
                         {/* Transaction Status */}
                         {(isPending || isConfirming || isSuccess || error) && (
                             <div className="bg-card border border-white/10 rounded-xl p-6">
-                                <h3 className="text-xl font-bold mb-4">Transaction Status</h3>
+                                <h3 className="text-xl font-bold mb-4">Trạng Thái Giao Dịch</h3>
                                 {isPending && (
                                     <div className="flex items-center gap-3 text-yellow-400">
                                         <div className="animate-spin">⏳</div>
-                                        <span>Waiting for wallet confirmation...</span>
+                                        <span>Đang chờ xác nhận từ ví...</span>
                                     </div>
                                 )}
                                 {isConfirming && (
                                     <div className="flex items-center gap-3 text-blue-400">
                                         <div className="animate-pulse">⛓️</div>
-                                        <span>Transaction confirming on blockchain...</span>
+                                        <span>Đang xác nhận trên blockchain...</span>
                                     </div>
                                 )}
                                 {isSuccess && (
                                     <div className="space-y-2">
                                         <div className="flex items-center gap-3 text-green-400">
                                             <CheckCircle className="h-5 w-5" />
-                                            <span>Ticket purchased successfully! 🎉</span>
+                                            <span>Mua vé thành công! 🎉</span>
                                         </div>
                                         {hash && (
                                             <p className="text-xs text-muted-foreground">
@@ -166,14 +166,14 @@ export default function EventDetailsPage() {
                                             </p>
                                         )}
                                         <p className="text-sm text-muted-foreground">
-                                            Check your wallet for the NFT ticket. Page will refresh in 3s...
+                                            Kiểm tra ví của bạn để xem vé NFT. Trang sẽ tự động tải lại sau 3 giây...
                                         </p>
                                     </div>
                                 )}
                                 {error && (
                                     <div className="flex items-center gap-3 text-red-400">
                                         <XCircle className="h-5 w-5" />
-                                        <span>Error: {error.message}</span>
+                                        <span>Lỗi: {error.message}</span>
                                     </div>
                                 )}
                             </div>
@@ -184,17 +184,17 @@ export default function EventDetailsPage() {
                     <div className="lg:col-span-1">
                         <div className="bg-card border border-white/10 rounded-xl p-6 sticky top-24 space-y-6">
                             <div className="text-center p-4 bg-primary/10 rounded-lg border border-primary/20">
-                                <p className="text-sm text-muted-foreground uppercase tracking-wider mb-1">Price</p>
+                                <p className="text-sm text-muted-foreground uppercase tracking-wider mb-1">Giá Vé</p>
                                 <p className="text-3xl font-bold text-primary">{formattedPrice} ETH</p>
                             </div>
 
                             <div className="space-y-4">
                                 <div className="flex justify-between text-sm">
-                                    <span className="text-muted-foreground">Total Tickets</span>
+                                    <span className="text-muted-foreground">Tổng Số Vé</span>
                                     <span className="font-medium">{totalTickets || 0}</span>
                                 </div>
                                 <div className="flex justify-between text-sm">
-                                    <span className="text-muted-foreground">Available</span>
+                                    <span className="text-muted-foreground">Còn Trống</span>
                                     <span className="font-medium">{availableTickets}</span>
                                 </div>
                                 <div className="w-full bg-secondary h-2 rounded-full overflow-hidden">
@@ -208,7 +208,7 @@ export default function EventDetailsPage() {
                             {!isConnected ? (
                                 <div className="space-y-3">
                                     <p className="text-sm text-center text-muted-foreground mb-2">
-                                        Connect your wallet to purchase tickets
+                                        Kết nối ví để mua vé
                                     </p>
                                     <Button
                                         className="w-full"
@@ -216,10 +216,10 @@ export default function EventDetailsPage() {
                                         variant="outline"
                                         disabled
                                     >
-                                        Connect Wallet First
+                                        Kết Nối Ví Trước
                                     </Button>
                                     <p className="text-xs text-center text-muted-foreground">
-                                        Use the "Connect Wallet" button in the top-right corner
+                                        Sử dụng nút "Connect Wallet" ở góc trên bên phải
                                     </p>
                                 </div>
                             ) : (
@@ -232,13 +232,13 @@ export default function EventDetailsPage() {
                                         disabled={isPending || isConfirming || availableTickets === 0}
                                     >
                                         {isPending || isConfirming
-                                            ? "Processing..."
+                                            ? "Đang Xử Lý..."
                                             : availableTickets === 0
-                                                ? "Sold Out"
-                                                : "Buy Ticket"}
+                                                ? "Đã Hết Vé"
+                                                : "Mua Vé"}
                                     </Button>
                                     <p className="text-xs text-center text-muted-foreground">
-                                        Powered by Blockchain. Secure & Verifiable.
+                                        An toàn & Có thể kiểm chứng nhờ Blockchain
                                     </p>
                                 </div>
                             )}

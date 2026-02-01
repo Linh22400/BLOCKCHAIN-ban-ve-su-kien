@@ -3,13 +3,13 @@
 import '@rainbow-me/rainbowkit/styles.css';
 import { getDefaultConfig, RainbowKitProvider } from '@rainbow-me/rainbowkit';
 import { WagmiProvider } from 'wagmi';
-import { mainnet, polygon, polygonAmoy, sepolia, hardhat } from 'wagmi/chains';
+import { sepolia } from 'wagmi/chains';
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 
 const config = getDefaultConfig({
     appName: 'NFT Tix',
     projectId: 'YOUR_PROJECT_ID', // Get from WalletConnect Cloud (optional but recommended)
-    chains: [hardhat, polygonAmoy, sepolia, polygon, mainnet],
+    chains: [sepolia], // Only Sepolia for production
     ssr: true,
 });
 

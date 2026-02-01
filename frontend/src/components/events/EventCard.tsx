@@ -73,14 +73,14 @@ export function EventCard({ eventAddress, eventId }: EventCardProps) {
                     {totalTickets !== undefined && totalMinted !== undefined && (
                         <div className="flex items-center gap-2">
                             <Tag className="h-4 w-4 text-primary" />
-                            <span>{totalMintedNum}/{totalTicketsNum} sold • {availableTickets} available</span>
+                            <span>{totalMintedNum}/{totalTicketsNum} đã bán • {availableTickets} còn trống</span>
                         </div>
                     )}
                 </div>
 
                 <Link href={`/events/${eventId}`} className="block">
                     <Button className="w-full" variant="secondary">
-                        View Details
+                        Xem Chi Tiết
                     </Button>
                 </Link>
             </div>

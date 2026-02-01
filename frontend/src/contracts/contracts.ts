@@ -19,5 +19,5 @@ export const CONTRACTS = {
 export const NETWORK_CONFIG = {
     chainId: 11155111,
     chainName: 'Sepolia',
-    rpcUrl: 'https://eth-sepolia-testnet.api.pocket.network', // Public RPC
+    rpcUrl: 'https://ethereum-sepolia-rpc.publicnode.com', // Public RPC with better limits
 };

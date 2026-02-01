@@ -10,10 +10,17 @@ const publicClient = createPublicClient({
 const ABI = parseAbi([
     'function totalMinted() view returns (uint256)',
     'function ownerOf(uint256 tokenId) view returns (address)',
-    'function ticketPrices(uint256 tokenId) view returns (uint256)'
+    'function ticketPrices(uint256 tokenId) view returns (uint256)',
+    'function ticketUsed(uint256 tokenId) view returns (bool)' // ✅ Correct function name
 ]);
 
-export async function fetchUserTickets(eventAddress: string, userAddress: string) {
+export interface UserTicket {
+    tokenId: number;
+    price: bigint;
+    isUsed: boolean;
+}
+
+export async function fetchUserTickets(eventAddress: string, userAddress: string): Promise<UserTicket[]> {
     try {
         // 1. Get total minted
         const totalMinted = await publicClient.readContract({
@@ -25,7 +32,7 @@ export async function fetchUserTickets(eventAddress: string, userAddress: string
         const total = Number(totalMinted);
         if (total === 0) return [];
 
-        // 2. Prepare multicall to get owners and prices
+        // 2. Prepare multicall to get owners, prices, and used status
         const calls = [];
         for (let i = 0; i < total; i++) {
             calls.push({
@@ -40,29 +47,44 @@ export async function fetchUserTickets(eventAddress: string, userAddress: string
                 functionName: 'ticketPrices',
                 args: [BigInt(i)],
             });
+            calls.push({
+                address: eventAddress as `0x${string}`,
+                abi: ABI,
+                functionName: 'ticketUsed', // ✅ Correct function name
+                args: [BigInt(i)],
+            });
         }
 
         // 3. Execute multicall
-        // Note: publicClient.multicall is available in viem.
         const results = await publicClient.multicall({
             contracts: calls,
         });
 
-        const myTickets: { tokenId: number; price: bigint }[] = [];
+        const myTickets: UserTicket[] = [];
 
         // 4. Process results
-        // Results form: [owner0, price0, owner1, price1, ...]
+        // Results form: [owner0, price0, isUsed0, owner1, price1, isUsed1, ...]
         for (let i = 0; i < total; i++) {
-            const ownerResult = results[i * 2];
-            const priceResult = results[i * 2 + 1];
+            const ownerResult = results[i * 3];
+            const priceResult = results[i * 3 + 1];
+            const isUsedResult = results[i * 3 + 2];
 
             if (ownerResult.status === 'success' &&
                 (ownerResult.result as unknown as string).toLowerCase() === userAddress.toLowerCase()) {
 
-                myTickets.push({
+                const ticketData: UserTicket = {
                     tokenId: i,
-                    price: priceResult.status === 'success' ? (priceResult.result as bigint) : BigInt(0)
+                    price: priceResult.status === 'success' ? (priceResult.result as bigint) : BigInt(0),
+                    isUsed: isUsedResult.status === 'success' ? Boolean(isUsedResult.result) : false
+                };
+
+                console.log(`🎫 Ticket #${i}:`, {
+                    price: ticketData.price.toString(),
+                    isUsed: ticketData.isUsed,
+                    isUsedRaw: isUsedResult.result
                 });
+
+                myTickets.push(ticketData);
             }
         }
 

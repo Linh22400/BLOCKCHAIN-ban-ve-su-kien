@@ -29,7 +29,7 @@ export default function CreateEventPage() {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault()
         if (!isConnected || !address) {
-            alert("Please connect your wallet first")
+            alert("Vui lòng kết nối ví trước")
             return
         }
 
@@ -71,15 +71,15 @@ export default function CreateEventPage() {
 
     return (
         <div className="container mx-auto px-4 py-12 max-w-2xl">
-            <h1 className="text-4xl font-bold mb-2">Create New Event</h1>
+            <h1 className="text-4xl font-bold mb-2">Tạo Sự Kiện Mới</h1>
             <p className="text-muted-foreground mb-8">
-                Deploy a new NFT ticketing contract on the blockchain
+                Triển khai NFT ticketing contract mới trên blockchain
             </p>
 
             {!isConnected && (
                 <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-lg p-4 mb-6">
                     <p className="text-yellow-500 text-sm">
-                        ⚠️ Please connect your wallet to create an event
+                        ⚠️ Vui lòng kết nối ví để tạo sự kiện
                     </p>
                 </div>
             )}
@@ -87,24 +87,24 @@ export default function CreateEventPage() {
             {/* Transaction Status */}
             {(isPending || isConfirming || isSuccess || error) && (
                 <div className="bg-card border border-white/10 rounded-xl p-6 mb-6">
-                    <h3 className="text-lg font-bold mb-3">Transaction Status</h3>
+                    <h3 className="text-lg font-bold mb-3">Trạng Thái Giao Dịch</h3>
                     {isPending && (
                         <div className="flex items-center gap-3 text-yellow-400">
                             <Loader2 className="h-5 w-5 animate-spin" />
-                            <span>Waiting for wallet confirmation...</span>
+                            <span>Đang chờ xác nhận từ ví...</span>
                         </div>
                     )}
                     {isConfirming && (
                         <div className="flex items-center gap-3 text-blue-400">
                             <Loader2 className="h-5 w-5 animate-spin" />
-                            <span>Deploying contract on blockchain...</span>
+                            <span>Đang triển khai contract trên blockchain...</span>
                         </div>
                     )}
                     {isSuccess && (
                         <div className="space-y-2">
                             <div className="flex items-center gap-3 text-green-400">
                                 <CheckCircle className="h-5 w-5" />
-                                <span>Event created successfully! 🎉</span>
+                                <span>Tạo sự kiện thành công! 🎉</span>
                             </div>
                             {hash && (
                                 <p className="text-xs text-muted-foreground">
@@ -112,14 +112,14 @@ export default function CreateEventPage() {
                                 </p>
                             )}
                             <p className="text-sm text-muted-foreground">
-                                Redirecting to events page...
+                                Đang chuyển hướng đến trang sự kiện...
                             </p>
                         </div>
                     )}
                     {error && (
                         <div className="flex items-center gap-3 text-red-400">
                             <XCircle className="h-5 w-5" />
-                            <span>Error: {error.message}</span>
+                            <span>Lỗi: {error.message}</span>
                         </div>
                     )}
                 </div>
@@ -128,19 +128,19 @@ export default function CreateEventPage() {
             <div className="bg-card border border-white/10 rounded-xl p-8">
                 <form onSubmit={handleSubmit} className="space-y-6">
                     <div className="space-y-2">
-                        <label className="text-sm font-medium">Event Title</label>
+                        <label className="text-sm font-medium">Tên Sự Kiện</label>
                         <Input
                             name="eventName"
                             value={formData.eventName}
                             onChange={handleChange}
-                            placeholder="e.g. Neon Nights Music Festival"
+                            placeholder="VD: Lễ Hội Âm Nhạc Neon Nights"
                             required
                         />
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div className="space-y-2">
-                            <label className="text-sm font-medium">Date</label>
+                            <label className="text-sm font-medium">Ngày</label>
                             <Input
                                 type="date"
                                 name="eventDate"
@@ -150,7 +150,7 @@ export default function CreateEventPage() {
                             />
                         </div>
                         <div className="space-y-2">
-                            <label className="text-sm font-medium">Time</label>
+                            <label className="text-sm font-medium">Giờ</label>
                             <Input
                                 type="time"
                                 name="eventTime"
@@ -162,19 +162,19 @@ export default function CreateEventPage() {
                     </div>
 
                     <div className="space-y-2">
-                        <label className="text-sm font-medium">Location</label>
+                        <label className="text-sm font-medium">Địa Điểm</label>
                         <Input
                             name="location"
                             value={formData.location}
                             onChange={handleChange}
-                            placeholder="e.g. Cyber City Arena"
+                            placeholder="VD: Sân Vận Động Quốc Gia Mỹ Đình"
                             required
                         />
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div className="space-y-2">
-                            <label className="text-sm font-medium">Total Tickets</label>
+                            <label className="text-sm font-medium">Tổng Số Vé</label>
                             <Input
                                 type="number"
                                 name="totalTickets"
@@ -186,7 +186,7 @@ export default function CreateEventPage() {
                             />
                         </div>
                         <div className="space-y-2">
-                            <label className="text-sm font-medium">Ticket Price (ETH)</label>
+                            <label className="text-sm font-medium">Giá Vé (ETH)</label>
                             <Input
                                 type="number"
                                 name="ticketPrice"
@@ -202,7 +202,7 @@ export default function CreateEventPage() {
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div className="space-y-2">
-                            <label className="text-sm font-medium">Max Resale Price (ETH)</label>
+                            <label className="text-sm font-medium">Giá Bán Lại Tối Đa (ETH)</label>
                             <Input
                                 type="number"
                                 name="maxResalePrice"
@@ -214,11 +214,11 @@ export default function CreateEventPage() {
                                 required
                             />
                             <p className="text-xs text-muted-foreground">
-                                Prevents scalping by limiting resale price
+                                Ngăn chặn đầu cơ bằng cách giới hạn giá bán lại
                             </p>
                         </div>
                         <div className="space-y-2">
-                            <label className="text-sm font-medium">Royalty (%)</label>
+                            <label className="text-sm font-medium">Hoa Hồng (%)</label>
                             <Input
                                 type="number"
                                 name="royaltyPercentage"
@@ -230,19 +230,19 @@ export default function CreateEventPage() {
                                 required
                             />
                             <p className="text-xs text-muted-foreground">
-                                Percentage you receive from resales
+                                Phần trăm bạn nhận được từ mỗi lần bán lại
                             </p>
                         </div>
                     </div>
 
                     <div className="space-y-2">
-                        <label className="text-sm font-medium">Description (Optional)</label>
+                        <label className="text-sm font-medium">Mô Tả (Tùy Chọn)</label>
                         <textarea
                             name="description"
                             value={formData.description}
                             onChange={handleChange}
                             className="flex min-h-[120px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                            placeholder="Describe your event..."
+                            placeholder="Mô tả sự kiện của bạn..."
                         />
                     </div>
 
@@ -255,15 +255,15 @@ export default function CreateEventPage() {
                         {isPending || isConfirming ? (
                             <>
                                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                Creating...
+                                Đang Tạo...
                             </>
                         ) : (
-                            "Create Event"
+                            "Tạo Sự Kiện"
                         )}
                     </Button>
 
                     <p className="text-xs text-center text-muted-foreground">
-                        This will deploy a new smart contract on the blockchain
+                        Hành động này sẽ triển khai smart contract mới trên blockchain
                     </p>
                 </form>
             </div>
