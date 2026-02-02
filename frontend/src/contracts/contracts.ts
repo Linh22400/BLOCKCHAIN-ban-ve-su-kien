@@ -1,23 +1,23 @@
+
 import EventFactoryABI from './EventFactoryABI.json';
 import EventTicketABI from './EventTicketABI.json';
-
-// Contract addresses from local deployment
-// Update these after each deployment
 export const CONTRACTS = {
     EventFactory: {
-        address: '0x33fDde77771520dD1fc11fCcCb60fbdcb731AB3f', // Sepolia - Marketplace V3 (Public Node)
-        abi: EventFactoryABI,
+        // Địa chỉ EventFactory contract đã deploy lên Sepolia
+        address: '0x33fDde77771520dD1fc11fCcCb60fbdcb731AB3f', // Sepolia
+        abi: EventFactoryABI, // ABI để tương tác với contract
     },
     EventTicket: {
-        // EventTicket contracts are created dynamically via factory
-        // Each event has its own contract address
-        abi: EventTicketABI,
+        // EventTicket contracts được tạo động qua Factory
+        // Mỗi event có địa chỉ contract riêng
+        // Lấy address từ getAllEvents() hoặc EventCreated event
+        abi: EventTicketABI, // ABI dùng chung cho tất cả EventTicket contracts
     },
 };
 
-// Network configuration for Sepolia
+
 export const NETWORK_CONFIG = {
-    chainId: 11155111,
-    chainName: 'Sepolia',
-    rpcUrl: 'https://ethereum-sepolia-rpc.publicnode.com', // Public RPC with better limits
+    chainId: 11155111,     // Chain ID của Sepolia (cố định)
+    chainName: 'Sepolia',  // Tên network
+    rpcUrl: 'https://ethereum-sepolia-rpc.publicnode.com', // Public RPC endpoint
 };
